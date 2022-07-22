@@ -9,10 +9,10 @@ void yyerror(const char * msg); // defini plus loin, utilise par yyparse()
 typedef struct yy_buffer_state * YY_BUFFER_STATE;
 int lineNumber; // notre compteur de lignes
 map <string,string> clayouts;
-extern FILE * yyin;
-extern YY_BUFFER_STATE yy_scan_string(const char *str);
-string adata;
- 
+
+string initialdata;
+string pdata="";
+bool alway ;
 %}
 /* token definition */
 %token STRING 
@@ -25,7 +25,7 @@ string adata;
 %start program
 %%
 program:value | command_call |txt | program program ;
-value: STRING { cout<<'\"'<<$1<<'\"';};
+value: STRING {pdata+='\"'+$1+'\"';};
 command_call : COMMAND LPAREN STRING  RPAREN   { 
     if(string($1)=="@field")
     {
@@ -45,7 +45,7 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
         buffer = new char[length];    
         t.read(buffer, length);       
         t.close(); 
-        cout<<buffer;
+        pdata+=buffer;
     }
     else if (string($1)=="@layout")
     {
@@ -69,38 +69,16 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
         buffer = new char[length];    
         t.read(buffer, length);       
         t.close(); 
-        cout<<buffer;
+       
 
     }
+    alway=true;
      };//LPAREN RPAREN ;
-txt: TXT {cout<<$1;};
+txt: TXT {pdata+=$1;};
 
 %%
 void yyerror(const char * msg)
 {
+cout<<"error is occured";
 cerr << "line " << lineNumber << ": " << msg << endl;
-}
-int main(int argc,char ** argv)
-{
-ifstream t;
-int length;
-char * buffer;
-if(argc>1)
-{
-
-t.open(argv[1]);     
-t.seekg(0, std::ios::end);    
-length = t.tellg();           
-t.seekg(0, std::ios::beg);  
-buffer = new char[length];    // allocate memory for a buffer of appropriate dimension
-t.read(buffer, length);       // read the whole file into the buffer
-t.close();   
-} 
-
-
-yy_scan_string(buffer);
-lineNumber=1;
-if(!yyparse()) cerr << "Success" << endl;
-system("pause");
-return(0);
 }
