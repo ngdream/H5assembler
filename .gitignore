@@ -5,7 +5,7 @@
 *.o
 *.so
 
-#  compiled flex and bison #
+#  compiled flex and bison 
 *.cpp
 *.hpp
 *.h
