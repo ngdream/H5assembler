@@ -1,8 +1,0 @@
-make.exe --dry-run --keep-going --print-directory
-make: Entering directory '/c/Users/Pc/Desktop/H5assembler'
-bison -d h5.y -o h5parse.cpp
- 
-flex -o h5lex.cpp h5.l
-g++ h5lex.cpp h5parse.cpp -o H5assembler.exe
-make: Leaving directory '/c/Users/Pc/Desktop/H5assembler'
- 
