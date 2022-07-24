@@ -1,20 +1,29 @@
-%{ /*-------- prog.y --------*/
+%define api.pure 
+
+%lex-param {yyscan_t scanner}
+%parse-param {yyscan_t scanner}
+
+%{
 #include <stdio.h>
 #include <iostream>
 #include<fstream>
 #include<map>
 using namespace std;
-int yylex(void); // defini dans progL.cpp, utilise par yyparse()
-void yyerror(const char * msg); // defini plus loin, utilise par yyparse()
-typedef struct yy_buffer_state * YY_BUFFER_STATE;
+typedef void* yyscan_t;
 int lineNumber; // notre compteur de lignes
 map <string,string> clayouts;
+void yyerror ( char const *msg);
+typedef union YYSTYPE YYSTYPE;
 
+   void yyerror (yyscan_t yyscanner, char const *msg);
+    int yylex(YYSTYPE *yylval_param, yyscan_t yyscanner);
 string initialdata;
 string pdata="";
 bool alway ;
 %}
 /* token definition */
+
+
 %token STRING 
 %token COMMAND
 %token LPAREN RPAREN  LBRACE RBRACE
@@ -27,6 +36,7 @@ bool alway ;
 program:value | command_call |txt | program program ;
 value: STRING {pdata+='\"'+$1+'\"';};
 command_call : COMMAND LPAREN STRING  RPAREN   { 
+    
     if(string($1)=="@field")
     {
          cout<<"define field :"<<$3;
@@ -77,8 +87,8 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
 txt: TXT {pdata+=$1;};
 
 %%
-void yyerror(const char * msg)
+
+void yyerror (yyscan_t yyscanner,const char *msg)
 {
-cout<<"error is occured";
-cerr << "line " << lineNumber << ": " << msg << endl;
+    
 }
