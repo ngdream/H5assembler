@@ -11,9 +11,11 @@ int lineNumber; // notre compteur de lignes
 map <string,string> clayouts;
 void yyerror ( char const *msg);
 typedef union YYSTYPE YYSTYPE;
-   void yyerror ( char const *msg);
-    int yylex();
-    bool loop;
+
+
+void yyerror ( char const *msg);
+int yylex();
+bool loop;
 string pdata="";
 %}
 /* token definition */

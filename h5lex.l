@@ -1,6 +1,5 @@
    
-
-/*nodefault  bison-bridge*/
+%option stack noyywrap
 %{
 extern int lineNumber; // definie dans prog.y, utilise par notre code pour \n
 #include "h5parse.hpp"
@@ -15,7 +14,6 @@ string val;
 string compile(string content);
 string compilefile(string path);
 void runwithargs(int argc ,char ** argv);
-
 int saveoutput(string compileddata ,string outputpath="");
 
 %}
@@ -42,27 +40,20 @@ command {i_command}|{e_command}|{l_command}|{f_command}
 ")"             { return RPAREN; }
 "{"             { return LBRACE; }
 "}"             { return RBRACE; }
-.|\n               {yylval.c=yytext[0];return TXT; }
-<<EOF>> {
-            		yypop_buffer_state();
-
-            if ( !YY_CURRENT_BUFFER )
-                {
-                yyterminate();
-                }
-         }
+.|\n            {yylval.c=yytext[0];return TXT; }
 %%
 
+//our main function 
 int main(int argc,char ** argv)
 {
 
+if(argc>1)runwithargs(argc,argv);// if there are arguments run with them
 
-if(argc>1)runwithargs(argc,argv);
-
-system("pause");
+system("pause");//don't quit the app at the end of assembly
 return(0);
 }
 
+//run h5A by using  arguments
 void runwithargs(int argc ,char ** argv)
 {
     if(argc ==2)
@@ -70,7 +61,7 @@ void runwithargs(int argc ,char ** argv)
     
 }
 
-
+//assemble a string 
 string compile(string content)
 {
 
@@ -79,12 +70,15 @@ do
 loop=false;
 pdata.clear();
  YY_BUFFER_STATE b =yy_scan_string(content.c_str());
+
 yyparse();
 content=pdata; 
-}while(loop==true);
+
+ }while(loop==true);
 return content;
 }
 
+//assemble file
 string compilefile(string path)
 {
 string data;
@@ -92,29 +86,24 @@ ifstream inputfile(path,ios::in|ios::binary|ios::ate);
 int length  = inputfile.tellg();           
 inputfile.seekg(0, std::ios::beg);  
 char * buffer = new char[length];// allocate memory for a buffer of appropriate dimension
-inputfile.read(buffer, length);       // read the whole file into the buffer
+inputfile.read(buffer, length);// read the whole file into the buffer
 inputfile.close();  
-
+cout<<"start assembly : "<<path<<endl;
 return compile(string(buffer));
 }
 
-
+//save  assembled  file to a specified path 
 int saveoutput(string compileddata ,string outputpath)
 {
-ofstream outputfile;
 
-if(outputpath!="")
-outputfile.open(outputpath);
-else
-outputfile = ofstream("output");
+outputpath=(outputpath=="")?"output":outputpath;
+ofstream outputfile  ("output");
+//dhow the compiled data in console if we're in debug 
 outputfile<<compileddata;
-cout<<compileddata;
+cout<<compileddata<<endl;
+cout<<"operation terminated successfuly , output at :"
+    <<outputpath<<endl;
 
 return 0;
 
-}
-
-int yywrap()
-{
-    return 1;
 }
