@@ -1,7 +1,4 @@
-%define api.pure 
 
-%lex-param {yyscan_t scanner}
-%parse-param {yyscan_t scanner}
 
 %{
 #include <stdio.h>
@@ -14,12 +11,10 @@ int lineNumber; // notre compteur de lignes
 map <string,string> clayouts;
 void yyerror ( char const *msg);
 typedef union YYSTYPE YYSTYPE;
-
-   void yyerror (yyscan_t yyscanner, char const *msg);
-    int yylex(YYSTYPE *yylval_param, yyscan_t yyscanner);
-string initialdata;
+   void yyerror ( char const *msg);
+    int yylex();
+    bool loop;
 string pdata="";
-bool alway ;
 %}
 /* token definition */
 
@@ -82,13 +77,13 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
        
 
     }
-    alway=true;
+    loop=true;
      };//LPAREN RPAREN ;
 txt: TXT {pdata+=$1;};
 
 %%
 
-void yyerror (yyscan_t yyscanner,const char *msg)
+void yyerror (const char *msg)
 {
-    
+    cout<<msg;
 }
