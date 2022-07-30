@@ -18,6 +18,8 @@ typedef union YYSTYPE YYSTYPE;
 void yyerror (yyscan_t scan, char const *msg);
 int yylex(YYSTYPE *c,yyscan_t scanner);
 bool loop;
+
+string basedir;
 string pdata="";
 %}
 /* token definition */
@@ -36,20 +38,25 @@ program:value | command_call |txt | program program ;
 value: STRING {
     string a=$1;
     pdata+='\"'+a+'\"'; };
-command_call : COMMAND LPAREN STRING  RPAREN   { 
-    
+command_call : COMMAND LPAREN STRING  RPAREN   {
+     
+    string dir=basedir;
+    if(dir!="")
+    dir+='\\';
+    dir+=$3;
     if(string($1)=="@field")
     {
-         cout<<"define field :"<<$3;
+         cout<<"define field :"<<$3<<endl;
          
 
     }
     else if(string($1)=="@include")
     {
+        cout<<"include file: "<<dir<<endl;
         ifstream t;
         int length;
         char * buffer;
-        t.open($3);     
+        t.open(dir.c_str());     
         t.seekg(0, std::ios::end);    
         length = t.tellg();           
         t.seekg(0, std::ios::beg);  
@@ -60,15 +67,15 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
     }
     else if (string($1)=="@layout")
     {
-        cout<<"define layout for field "<<$3;
+        cout<<"define layout for field "<<$3<<endl;
     }
     else if (string($1)=="@repeat")
     {
-        cout<<"reapeat instruction"<<$3;
+        cout<<"reapeat instruction"<<$3<<endl;
     }
     else
     {
-        cout<<"extend with : "<<$3;
+        cout<<"extend with : "<<$3<<endl;
 
          ifstream t;
         int length;

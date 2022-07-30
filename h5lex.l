@@ -10,6 +10,7 @@ using namespace std;
 extern string initialdata;
 extern string pdata;
 extern bool loop;
+extern string basedir;
 string val;
 string compile(string content);
 string compilefile(string path);
@@ -57,8 +58,25 @@ return(0);
 //run h5A by using  arguments
 void runwithargs(int argc ,char ** argv)
 {
-    if(argc ==2)
-    saveoutput(compilefile(argv[1]));
+  if(argv[2]=="-m")
+  {
+    if(argc<3)
+    {
+        //will assemble a file using a H5maker file
+        cout<<"no H5maker file specified"<<endl;
+    }
+
+  }
+  else
+  {
+    if(argc>2)
+    {
+        for(int i=2 ; i<argc;i++)
+        saveoutput(compilefile(argv[1]),argv[i]);
+    }
+    else
+        saveoutput(compilefile(argv[1]));
+  }
     
 }
 
@@ -91,8 +109,17 @@ int length  = inputfile.tellg();
 inputfile.seekg(0, std::ios::beg);  
 char * buffer = new char[length];// allocate memory for a buffer of appropriate dimension
 inputfile.read(buffer, length);// read the whole file into the buffer
-inputfile.close();  
+inputfile.close(); 
 cout<<"start assembly : "<<path<<endl;
+
+
+const size_t last_slash_idx = path.rfind('\\');
+if (std::string::npos != last_slash_idx)
+{
+    basedir = path.substr(0, last_slash_idx);
+}
+cout<<"directory is :"<<basedir;
+
 return compile(string(buffer));
 }
 
@@ -100,12 +127,10 @@ return compile(string(buffer));
 int saveoutput(string compileddata ,string outputpath)
 {
 
-outputpath=(outputpath=="")?"output":outputpath;
-ofstream outputfile  ("output");
-//dhow the compiled data in console if we're in debug 
+outputpath=(outputpath=="")?"output.html":outputpath;
+ofstream outputfile  (outputpath);
 outputfile<<compileddata;
-cout<<compileddata<<endl;
-cout<<"operation terminated successfuly , output at :"
+cout<<"\noperation terminated successfuly , output at :"
     <<outputpath<<endl;
 
 return 0;
