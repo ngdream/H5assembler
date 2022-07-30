@@ -1,4 +1,6 @@
-
+%define api.pure full
+%lex-param {yyscan_t scanner}
+%parse-param {yyscan_t scanner}
 
 %{
 #include <stdio.h>
@@ -9,12 +11,12 @@ using namespace std;
 typedef void* yyscan_t;
 int lineNumber; // notre compteur de lignes
 map <string,string> clayouts;
-void yyerror ( char const *msg);
+void yyerror ( yyscan_t scan,char const *msg);
 typedef union YYSTYPE YYSTYPE;
 
 
-void yyerror ( char const *msg);
-int yylex();
+void yyerror (yyscan_t scan, char const *msg);
+int yylex(YYSTYPE *c,yyscan_t scanner);
 bool loop;
 string pdata="";
 %}
@@ -31,7 +33,9 @@ string pdata="";
 %start program
 %%
 program:value | command_call |txt | program program ;
-value: STRING {pdata+='\"'+$1+'\"';};
+value: STRING {
+    string a=$1;
+    pdata+='\"'+a+'\"'; };
 command_call : COMMAND LPAREN STRING  RPAREN   { 
     
     if(string($1)=="@field")
@@ -85,7 +89,7 @@ txt: TXT {pdata+=$1;};
 
 %%
 
-void yyerror (const char *msg)
+void yyerror (yyscan_t scan,const char *msg)
 {
     cout<<msg;
 }

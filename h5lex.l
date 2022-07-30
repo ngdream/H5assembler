@@ -1,5 +1,5 @@
    
-%option stack noyywrap
+%option stack noyywrap  reentrant bison-bridge
 %{
 extern int lineNumber; // definie dans prog.y, utilise par notre code pour \n
 #include "h5parse.hpp"
@@ -32,15 +32,16 @@ command {i_command}|{e_command}|{l_command}|{f_command}
 
 %%
 "\""       { val.clear(); BEGIN(strenv); }
-<strenv>"\""    { BEGIN(INITIAL);sprintf(yylval.str,"%s",val.c_str());return(STRING); }
-<strenv><<EOF>> { BEGIN(INITIAL); sprintf(yylval.str,"%s",val.c_str());return(STRING); }
+<strenv>"\""    { BEGIN(INITIAL);sprintf(yylval->str,"%s",val.c_str());return(STRING); }
+<strenv><<EOF>> { BEGIN(INITIAL); sprintf(yylval->str,"%s",val.c_str());return(STRING); }
 <strenv>.       { val+=yytext[0]; }
-{command}       {sprintf(yylval.str,"%s",yytext);return (COMMAND);}
+{command}       {sprintf(yylval->str,"%s",yytext);return (COMMAND);}
 "("             { return LPAREN; }
 ")"             { return RPAREN; }
 "{"             { return LBRACE; }
 "}"             { return RBRACE; }
-.|\n            {yylval.c=yytext[0];return TXT; }
+.|\n            {yylval->c=yytext[0];return TXT; }
+
 %%
 
 //our main function 
@@ -64,15 +65,18 @@ void runwithargs(int argc ,char ** argv)
 //assemble a string 
 string compile(string content)
 {
-
+cout<<content;
 do 
 {
 loop=false;
+yyscan_t * scan= new yyscan_t;
 pdata.clear();
- YY_BUFFER_STATE b =yy_scan_string(content.c_str());
-
-yyparse();
+yylex_init(scan) ;
+YY_BUFFER_STATE buf=yy_scan_bytes(content.c_str(),strlen(content.c_str()),*scan);
+yyparse(*scan);
+yylex_destroy (*scan) ;
 content=pdata; 
+
 
  }while(loop==true);
 return content;
