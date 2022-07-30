@@ -8,7 +8,7 @@ the H5A repository is on github
 the current version is the 0.0.1
 
 ## building
-1. ### on windows
+1. ### on window
 if you want to build H5assembler on window 
 - download msys64
 - download mingw64 or  mingw32 toolchains
