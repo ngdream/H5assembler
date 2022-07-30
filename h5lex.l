@@ -65,7 +65,7 @@ void runwithargs(int argc ,char ** argv)
 //assemble a string 
 string compile(string content)
 {
-cout<<content;
+
 do 
 {
 loop=false;
