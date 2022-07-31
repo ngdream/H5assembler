@@ -6,10 +6,10 @@
 *.so
 
 #  compiled flex and bison 
-*.cpp
+*.cxx
 *.hpp
-*.h
 *.hh
+*.hxx
 
 # Ignore IDE specific files
 .idea/

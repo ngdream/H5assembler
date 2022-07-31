@@ -13,9 +13,6 @@ int lineNumber; // notre compteur de lignes
 map <string,string> clayouts;
 void yyerror ( yyscan_t scan,char const *msg);
 typedef union YYSTYPE YYSTYPE;
-
-
-void yyerror (yyscan_t scan, char const *msg);
 int yylex(YYSTYPE *c,yyscan_t scanner);
 bool loop;
 

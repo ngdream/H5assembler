@@ -1,3 +1,5 @@
+/* to run this script you have to download jsinfinity */
+
 
 print("made by elodream ")
 print("hello welcome on H5assembler");
