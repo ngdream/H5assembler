@@ -26,17 +26,17 @@ string pdata="";
 %token COMMAND
 %token LPAREN RPAREN  LBRACE RBRACE
 %token TXT
-%union { char c; char str [0Xfff]; double real; int integer; }
+%union { char c; char str[0xfff] ; double real; int integer; }
 %type<c> TXT;
 %type<str> STRING COMMAND;
 %start program
 %%
 program:value | command_call |txt | program program ;
-value: STRING {
+value: STRING {  
     string a=$1;
     pdata+='\"'+a+'\"'; };
 command_call : COMMAND LPAREN STRING  RPAREN   {
-     
+    
     string dir=basedir;
     if(dir!="")
     dir+='\\';
@@ -50,6 +50,7 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
     else if(string($1)=="@include")
     {
         cout<<"include file: "<<dir<<endl;
+      
         ifstream t;
         int length;
         char * buffer;

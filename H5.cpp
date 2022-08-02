@@ -2,9 +2,9 @@ typedef void *yyscan_t;
 
 #include "h5parse.hxx"
 #include "h5lex.hpp"
+
 #include <iostream>
 #include <fstream>
-
 using namespace std;
 
 extern string initialdata;
@@ -14,22 +14,20 @@ extern string basedir;
 
 string compile(string content);
 string compilefile(string path);
-void runwithargs(int argc, char **argv);
+int runwithargs(int argc, char **argv);
+int runwithoutarg(char **argv);
 int saveoutput(string compileddata, string outputpath = "");
-
 // our main function
 int main(int argc, char **argv)
 {
 
-    if (argc > 1)
-        runwithargs(argc, argv); // if there are arguments run with them
-
-    system("pause"); // don't quit the app at the end of assembly
-    return (0);
+    int c = (argc > 1) ? runwithargs(argc, argv) : runwithoutarg(argv); // if there are arguments run with them
+    system("pause");                                                    // don't quit the app at the end of assembly
+    return (c);
 }
 
 // run h5A by using  arguments
-void runwithargs(int argc, char **argv)
+int runwithargs(int argc, char **argv)
 {
     if (argv[2] == "-m")
     {
@@ -49,6 +47,8 @@ void runwithargs(int argc, char **argv)
         else
             saveoutput(compilefile(argv[1]));
     }
+
+    return EXIT_SUCCESS;
 }
 
 // assemble a string
@@ -57,9 +57,11 @@ string compile(string content)
 
     do
     {
+
         loop = false;
         yyscan_t *scan = new yyscan_t;
         pdata.clear();
+
         yylex_init(scan);
         YY_BUFFER_STATE buf = yy_scan_bytes(content.c_str(), strlen(content.c_str()), *scan);
         yyparse(*scan);
@@ -87,8 +89,7 @@ string compilefile(string path)
     {
         basedir = path.substr(0, last_slash_idx);
     }
-    cout << "directory is :" << basedir;
-
+    cout << "directory is :" << basedir << endl;
     return compile(string(buffer));
 }
 

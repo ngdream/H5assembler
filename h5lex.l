@@ -1,6 +1,6 @@
    
 %option stack noyywrap  reentrant bison-bridge
-%option header-file="h5lex.hpp"
+%option header-file="h5lex.hpp" 
 %{
 extern int lineNumber; // definie dans prog.y, utilise par notre code pour \n
 #include "h5parse.hxx"
