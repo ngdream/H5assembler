@@ -5,7 +5,7 @@ you will never need to rewrite the same text again
 
 ## state
 the H5A repository is on github 
-the current version is the 0.0.2
+the current version is the 0.1.0
 
 ## building
 1. ### on window
