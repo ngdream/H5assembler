@@ -30,4 +30,7 @@ pacman -S make
 
 It is originally developed by Mr. Nguewo fossong christian 
 
+## contributors
+
+help needed : this doesn't have contributors yet .
 
