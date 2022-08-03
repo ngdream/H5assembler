@@ -1,20 +1,26 @@
-
+/*made by elodream copyright elodream 2022*/
+/*
+parser for h5maker file 
+*/   
 
 %{
-#include <stdio.h>
-    #include<vector>
-    #include <iostream>
+#include<vector>
+#include <iostream>
 #include<fstream>
 #include<map>
 #include "h5mlex.hpp"
+
 using namespace  std;
+
+
 map<string,void*> variables;
 vector<string> l;
-extern void yyerror (const char *msg);
+void yyerror (const char *msg);
 int saveoutput(string compileddata, string outputpath = "");
+
 string compile(string content);
 string compilefile(string path);
- int   yylex();
+int   yylex();
 
 %}
 /* token definition */

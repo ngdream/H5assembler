@@ -1,4 +1,5 @@
-   
+/*made by elodream copyright elodream 2022*/
+/*scanner for h5maker file */   
 %option  noyywrap 
 %option header-file="h5mlex.hpp" 
 %{
@@ -10,10 +11,7 @@ using namespace std;
 
 string location;
 
-
 %}
-/*reentrant bison-bridge*/
-/* doesn’t need yywrap() */
  
 %x locenv
 VAR  [a-zA-Z]+[0-9]*
@@ -30,6 +28,7 @@ VAR  [a-zA-Z]+[0-9]*
 "{"             {return LBRACE;}
 "}"             {return RBRACE;}
 .           {}
+
 {VAR}       {return VAR;}
 
 %%

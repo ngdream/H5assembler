@@ -1,3 +1,11 @@
+
+/*
+made by elodream
+H5assembler is a software made by elodream  which help  all frontend devellopper and integrator to
+create a static page in html without any repetitions
+it will guarantee you to be able to easily interer your frontend designs in websites
+
+*/
 typedef void *yyscan_t;
 
 #include "h5parse.hxx"
@@ -15,6 +23,7 @@ extern string basedir;
 string compile(string content);
 string compilefile(string path);
 int runwithargs(int argc, char **argv);
+int compilewithh5m(char **argv, int argc);
 int runwithoutarg(char **argv);
 int saveoutput(string compileddata, string outputpath = "");
 // our main function
@@ -22,19 +31,23 @@ int main(int argc, char **argv)
 {
 
     int c = (argc > 1) ? runwithargs(argc, argv) : runwithoutarg(argv); // if there are arguments run with them
-    system("pause");                                                    // don't quit the app at the end of assembly
+                                                                        // don't quit the app at the end of assembly
     return (c);
 }
 
 // run h5A by using  arguments
 int runwithargs(int argc, char **argv)
 {
-    if (argv[2] == "-m")
+    if (string(argv[1]) == "-m")
     {
         if (argc < 3)
         {
-            // will assemble a file using a H5maker file
+            // will not assemble a file using a H5maker file
             cout << "no H5maker file specified" << endl;
+        }
+        else
+        {
+            compilewithh5m(argv, argc);
         }
     }
     else
@@ -47,7 +60,7 @@ int runwithargs(int argc, char **argv)
         else
             saveoutput(compilefile(argv[1]));
     }
-
+    system("pause");
     return EXIT_SUCCESS;
 }
 
@@ -77,20 +90,25 @@ string compilefile(string path)
 {
     string data;
     ifstream inputfile(path, ios::in | ios::binary | ios::ate);
-    int length = inputfile.tellg();
-    inputfile.seekg(0, std::ios::beg);
-    char *buffer = new char[length]; // allocate memory for a buffer of appropriate dimension
-    inputfile.read(buffer, length);  // read the whole file into the buffer
-    inputfile.close();
-    cout << "start assembly : " << path << endl;
-
-    const size_t last_slash_idx = path.rfind('\\');
-    if (std::string::npos != last_slash_idx)
+    if (inputfile.is_open())
     {
-        basedir = path.substr(0, last_slash_idx);
+        int length = inputfile.tellg();
+        inputfile.seekg(0, std::ios::beg);
+        char *buffer = new char[length]; // allocate memory for a buffer of appropriate dimension
+        inputfile.read(buffer, length);  // read the whole file into the buffer
+        inputfile.close();
+        cout << "start assembly : " << path << endl;
+
+        const size_t last_slash_idx = path.rfind('\\');
+        if (std::string::npos != last_slash_idx)
+        {
+            basedir = path.substr(0, last_slash_idx);
+        }
+        cout << "directory is :" << basedir << endl;
+        return compile(string(buffer));
     }
-    cout << "directory is :" << basedir << endl;
-    return compile(string(buffer));
+    cout << "connot find file (" << path << ")" << endl;
+    return "";
 }
 
 // save  assembled  file to a specified path

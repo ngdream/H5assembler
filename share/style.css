@@ -1,0 +1,10 @@
+.nav-link
+{
+    color: #111 !important;
+    font-weight: bold;
+}
+
+.nav-link:hover
+{
+    border-bottom: #111 2px solid;
+}

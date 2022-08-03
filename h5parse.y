@@ -10,10 +10,13 @@
 using namespace std;
 typedef void* yyscan_t;
 int lineNumber; // notre compteur de lignes
-map <string,string> clayouts;
-void yyerror ( yyscan_t scan,char const *msg);
 typedef union YYSTYPE YYSTYPE;
+
+map <string,string>layout_data;
+void yyerror ( yyscan_t scan,char const *msg);
 int yylex(YYSTYPE *c,yyscan_t scanner);
+
+
 bool loop;
 
 string basedir;
@@ -21,14 +24,18 @@ string pdata="";
 %}
 /* token definition */
 
-
 %token STRING 
 %token COMMAND
 %token LPAREN RPAREN  LBRACE RBRACE
 %token TXT
+
+
 %union { char c; char str[0xfff] ; double real; int integer; }
 %type<c> TXT;
 %type<str> STRING COMMAND;
+
+
+
 %start program
 %%
 program:value | command_call |txt | program program ;
@@ -51,17 +58,25 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
     {
         cout<<"include file: "<<dir<<endl;
       
-        ifstream t;
+        ifstream file(dir.c_str());
+        if(file.is_open())
+        {
         int length;
-        char * buffer;
-        t.open(dir.c_str());     
-        t.seekg(0, std::ios::end);    
-        length = t.tellg();           
-        t.seekg(0, std::ios::beg);  
-        buffer = new char[length];    
-        t.read(buffer, length);       
-        t.close(); 
+        char * buffer;    
+        file.seekg(0, std::ios::end);    
+        length = file.tellg();           
+        file.seekg(0, std::ios::beg);  
+        buffer = new char[length+1];    
+        file.read(buffer, length);   
+        buffer[length-1]='\0' ;   
+        file.close(); 
         pdata+=buffer;
+        }
+        else
+        {
+            cout<<"cannot find file :"<<dir;
+        }
+        
     }
     else if (string($1)=="@layout")
     {
@@ -91,10 +106,9 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
     loop=true;
      };//LPAREN RPAREN ;
 txt: TXT {pdata+=$1;};
-
 %%
 
 void yyerror (yyscan_t scan,const char *msg)
 {
-    cout<<msg;
+    cerr<<msg;
 }
