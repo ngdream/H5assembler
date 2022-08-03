@@ -58,17 +58,15 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
     {
         cout<<"include file: "<<dir<<endl;
       
-        ifstream file(dir.c_str());
+        ifstream file(dir.c_str(),ios::in | ios::binary |ios::ate);
         if(file.is_open())
         {
-        int length;
         char * buffer;    
-        file.seekg(0, std::ios::end);    
-        length = file.tellg();           
-        file.seekg(0, std::ios::beg);  
-        buffer = new char[length+1];    
-        file.read(buffer, length);   
-        buffer[length-1]='\0' ;   
+        int length = file.tellg();
+        file.seekg(0, std::ios::beg); 
+        buffer =(char*) malloc(sizeof(char)*length)   ;
+        file.read(buffer, length); 
+        buffer[length]='\0';
         file.close(); 
         pdata+=buffer;
         }

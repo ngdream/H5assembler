@@ -94,7 +94,7 @@ string compilefile(string path)
     {
         int length = inputfile.tellg();
         inputfile.seekg(0, std::ios::beg);
-        char *buffer = new char[length]; // allocate memory for a buffer of appropriate dimension
+        char *buffer = new char[length+1]; // allocate memory for a buffer of appropriate dimension
         inputfile.read(buffer, length);  // read the whole file into the buffer
         inputfile.close();
         cout << "start assembly : " << path << endl;
@@ -116,10 +116,11 @@ int saveoutput(string compileddata, string outputpath)
 {
 
     outputpath = (outputpath == "") ? "output.html" : outputpath;
-    ofstream outputfile(outputpath);
-    outputfile << compileddata;
-    cout << "\noperation terminated successfuly , output at :"
-         << outputpath << endl;
+    ofstream outputfile(outputpath, ios::out | ios::binary);
+    outputfile.write(compileddata.c_str(), compileddata.size());
+    cout
+        << "\noperation terminated successfuly , output at :"
+        << outputpath << endl;
 
     return 0;
 }
