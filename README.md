@@ -68,9 +68,9 @@ this command will generate an output.html file with the following content
 </head>
 <body>
 <nav>
-    <a href="">mangue</a>
-    <a href="">banane</a>
-    <a href="">sceau</a>
+    <a href="">mikle</a>
+    <a href="">jordan</a>
+    <a href="">taba</a>
 </nav>
 
 </body>
