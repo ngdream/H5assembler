@@ -14,22 +14,22 @@ string location;
 %}
  
 %x locenv
-VAR  [a-zA-Z]+[0-9]*
+var             [a-zA-Z]+[0-9]*
 
 %%
-"\""       { location.clear(); BEGIN(locenv); }
+"\""            { location.clear(); BEGIN(locenv); }
 <locenv>"\""    { BEGIN(INITIAL);yylval.str=(char*)malloc(sizeof(char)*location.size());sprintf(yylval.str,"%s",location.c_str());return(PATH); }
 <locenv><<EOF>> { BEGIN(INITIAL);yylval.str=new char[location.size()+1] ;sprintf(yylval.str,"%s",location.c_str());return(PATH); }
 <locenv>.       { location+=yytext[0]; }
 ";"             {return SEMI;}
 "="             {return EQUAL;}
-{VAR}       {yylval.str=new char[strlen(yytext)];}
-"\n"            {}
+{var}           {yylval.str=new char[strlen(yytext)]; return VAR;}
+
 "{"             {return LBRACE;}
 "}"             {return RBRACE;}
-.           {}
+"\n"            {}
 
-{VAR}       {return VAR;}
+
 
 %%
 

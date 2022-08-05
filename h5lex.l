@@ -32,10 +32,10 @@ command {i_command}|{e_command}|{l_command}|{f_command}
 <strenv><<EOF>> { BEGIN(INITIAL); sprintf(yylval->str,"%s",val.c_str());return(STRING); }
 <strenv>.       { val+=yytext[0]; }
 {command}       {sprintf(yylval->str,"%s",yytext);return (COMMAND);}
-"("             { return LPAREN; }
-")"             { return RPAREN; }
-"{"             { return LBRACE; }
-"}"             { return RBRACE; }
+"("             {yylval->c=yytext[0]; return LPAREN; }
+")"             {yylval->c=yytext[0]; return RPAREN; }
+"{"             { yylval->c=yytext[0];return LBRACE; }
+"}"             { yylval->c=yytext[0];return RBRACE; }
 .|\n            {yylval->c=yytext[0];return TXT; }
 
 %%

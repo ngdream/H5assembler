@@ -82,6 +82,7 @@ string compile(string content)
         content = pdata;
 
     } while (loop == true);
+    pdata.erase();
     return content;
 }
 
@@ -94,8 +95,8 @@ string compilefile(string path)
     {
         int length = inputfile.tellg();
         inputfile.seekg(0, std::ios::beg);
-        char *buffer = new char[length+1]; // allocate memory for a buffer of appropriate dimension
-        inputfile.read(buffer, length);  // read the whole file into the buffer
+        char *buffer = new char[length + 1]; // allocate memory for a buffer of appropriate dimension
+        inputfile.read(buffer, length);      // read the whole file into the buffer
         inputfile.close();
         cout << "start assembly : " << path << endl;
 
@@ -105,7 +106,10 @@ string compilefile(string path)
             basedir = path.substr(0, last_slash_idx);
         }
         cout << "directory is :" << basedir << endl;
-        return compile(string(buffer));
+        string data = buffer;
+        free(buffer);
+        inputfile.close();
+        return compile(data);
     }
     cout << "connot find file (" << path << ")" << endl;
     return "";
@@ -121,6 +125,6 @@ int saveoutput(string compileddata, string outputpath)
     cout
         << "\noperation terminated successfuly , output at :"
         << outputpath << endl;
-
+    outputfile.close();
     return 0;
 }

@@ -24,11 +24,11 @@ int   yylex();
 
 %}
 /* token definition */
-%token ASSIGN  SEMI  EQUAL
-%token PATH VAR COMA
+%token VAR ASSIGN  SEMI  EQUAL
+%token PATH  COMA
 %token RBRACE LBRACE
 
-%union {  char * str ; int integer; }
+%union {  char * str ;}
 %type<str> PATH VAR pathlistargs  pathlist;
 %start program
 %%
@@ -69,7 +69,7 @@ instructions:instruction instructions |instruction
 
 void yyerror (const char *msg)
 {
-    cout<<msg;
+    cerr<<msg;
 }
 
 void inith5m()

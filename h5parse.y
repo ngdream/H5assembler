@@ -31,19 +31,16 @@ string pdata="";
 
 
 %union { char c; char str[0xfff] ; double real; int integer; }
-%type<c> TXT;
-%type<str> STRING COMMAND;
-
-
-
+%type<c> TXT RPAREN LPAREN RBRACE LBRACE;
+%type<str> STRING COMMAND ;
 %start program
 %%
-program:value | command_call |txt | program program ;
-value: STRING {  
-    string a=$1;
-    pdata+='\"'+a+'\"'; };
+
+
+program:program content | content ;
+
+// call command
 command_call : COMMAND LPAREN STRING  RPAREN   {
-    
     string dir=basedir;
     if(dir!="")
     dir+='\\';
@@ -69,6 +66,7 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
         buffer[length]='\0';
         file.close(); 
         pdata+=buffer;
+        free(buffer);
         }
         else
         {
@@ -86,26 +84,40 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
     }
     else
     {
-        cout<<"extend with : "<<$3<<endl;
-
-         ifstream t;
-        int length;
-        char * buffer;
-        t.open($3);     
-        t.seekg(0, std::ios::end);    
-        length = t.tellg();           
-        t.seekg(0, std::ios::beg);  
-        buffer = new char[length];    
-        t.read(buffer, length);       
-        t.close(); 
-       
-
+        cout<<"extend file: "<<dir<<endl;
+      
+        ifstream file(dir.c_str(),ios::in | ios::binary |ios::ate);
+        if(file.is_open())
+        {
+        char * buffer;    
+        int length = file.tellg();
+        file.seekg(0, std::ios::beg); 
+        buffer =(char*) malloc(sizeof(char)*length)   ;
+        file.read(buffer, length); 
+        buffer[length]='\0';
+        file.close(); 
+        pdata+=buffer;
+        free(buffer);
+        }
+        else
+        {
+            cout<<"cannot find file :"<<dir;
+        }
+    
     }
     loop=true;
-     };//LPAREN RPAREN ;
-txt: TXT {pdata+=$1;};
+     };
+//identify simple content
+simple_content:TXT {pdata+=$1;}; 
+|RPAREN {pdata+=$1;};  
+|LPAREN {pdata+=$1;};
+|STRING {  
+    string a=$1;
+    pdata+='\"'+a+'\"'; };  
+content:command_call | simple_content
 %%
 
+//error message to display at sintax error
 void yyerror (yyscan_t scan,const char *msg)
 {
     cerr<<msg;
