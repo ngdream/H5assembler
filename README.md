@@ -80,12 +80,7 @@ this command will generate an output.html file with the following content
 for more information about h5 using  read the ``documentation``
 
 ## contributing
-1. you can contribute on github by forking our repository
-2. you can donate us by ``paypal`` , by ``orange money`` or by  ``mtn mobile money``
-## authors
-
-It is originally developed by Mr. Nguewo fossong christian 
-
+please the contibution guideline for more details
 ## contributors
 
 help needed : this doesn't have contributors yet .
