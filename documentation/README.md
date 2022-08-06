@@ -10,7 +10,7 @@ h5a have functions  that is started by '@' and  must be included in the file you
 
 this function  is used to include the contents of the file in another 
 
-#### exemble of use * 
+#### exemble of use 
 if you have these two files in the same directory
 **index.html**
 ```html
