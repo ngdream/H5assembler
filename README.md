@@ -77,7 +77,7 @@ this command will generate an output.html file with the following content
 </html>
 ```
 
-for more information about h5 using  read the ``documentation``
+for more information about h5 using  read the [``documentation``](/documentation/README.md)
 
 ## contributing
 please the contibution guideline for more details
