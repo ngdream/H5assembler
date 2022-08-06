@@ -7,6 +7,7 @@
 #include <iostream>
 #include<fstream>
 #include<map>
+#include<cstring>
 using namespace std;
 typedef void* yyscan_t;
 int lineNumber; // notre compteur de lignes
@@ -30,14 +31,14 @@ string pdata="";
 %token TXT
 
 
-%union { char c; char str[0xfff] ; double real; int integer; }
+%union { char c; char *str ; double real; int integer; }
 %type<c> TXT RPAREN LPAREN RBRACE LBRACE;
-%type<str> STRING COMMAND ;
+%type<str> STRING COMMAND command_call content   content_part tail tails ;
 %start program
 %%
 
 
-program:program content | content ;
+program:content ;
 
 // call command
 command_call : COMMAND LPAREN STRING  RPAREN   {
@@ -65,8 +66,7 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
         file.read(buffer, length); 
         buffer[length]='\0';
         file.close(); 
-        pdata+=buffer;
-        free(buffer);
+        $$=buffer;
         }
         else
         {
@@ -78,10 +78,7 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
     {
         cout<<"define layout for field "<<$3<<endl;
     }
-    else if (string($1)=="@repeat")
-    {
-        cout<<"reapeat instruction"<<$3<<endl;
-    }
+  
     else
     {
         cout<<"extend file: "<<dir<<endl;
@@ -107,14 +104,51 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
     }
     loop=true;
      };
+
+    | COMMAND LPAREN STRING  RPAREN LBRACE tails RBRACE
+    {
+    if (string($1)=="@repeat")
+    {
+        cout<<"reapeat instruction :"<<$3<<" times"<<endl;
+        string repeated;
+        for(int i=0 ;i<atoi($3);i++)
+        {
+            repeated+=$6;
+        }
+        $$=new char[repeated.size()];
+        strcpy($$,repeated.c_str());
+       
+    }
+
+    }
 //identify simple content
-simple_content:TXT {pdata+=$1;}; 
+tail:
+TXT{$$=new char[2]; $$[0]=$1; $$[1]='\0';} |RPAREN |LPAREN|STRING |command_call
+
+tails:tails tail
+{char *str = (char*) malloc(strlen($1) + strlen($2) + 1);
+      strcpy(str, $1);
+      strcat(str, $2);
+      free($2);
+      free($1);
+      $$ = str;
+      }
+ |tail
+
+
+content_part:TXT {pdata+=$1;}; 
 |RPAREN {pdata+=$1;};  
 |LPAREN {pdata+=$1;};
 |STRING {  
     string a=$1;
     pdata+='\"'+a+'\"'; };  
-content:command_call | simple_content
+|command_call{$$=$1;  pdata+=$$;}
+
+
+content:content content_part 
+
+ |content_part 
+
 %%
 
 //error message to display at sintax error

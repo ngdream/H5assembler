@@ -23,15 +23,16 @@ i_command       @include
 e_command       @extends
 l_command       @layout
 f_command       @field
+r_command       @repeat
 
-command {i_command}|{e_command}|{l_command}|{f_command}
+command {i_command}|{e_command}|{l_command}|{f_command}|{r_command}
 
 %%
 "\""       { val.clear(); BEGIN(strenv); }
-<strenv>"\""    { BEGIN(INITIAL);sprintf(yylval->str,"%s",val.c_str());return(STRING); }
-<strenv><<EOF>> { BEGIN(INITIAL); sprintf(yylval->str,"%s",val.c_str());return(STRING); }
+<strenv>"\""    { BEGIN(INITIAL);yylval->str=new char[val.size()+1];sprintf(yylval->str,"%s",val.c_str());return(STRING); }
+<strenv><<EOF>> { BEGIN(INITIAL);yylval->str=new char[val.size()+1]; sprintf(yylval->str,"%s",val.c_str());return(STRING); }
 <strenv>.       { val+=yytext[0]; }
-{command}       {sprintf(yylval->str,"%s",yytext);return (COMMAND);}
+{command}       {yylval->str=new char[strlen(yytext)+1]; sprintf(yylval->str,"%s",yytext);return (COMMAND);}
 "("             {yylval->c=yytext[0]; return LPAREN; }
 ")"             {yylval->c=yytext[0]; return RPAREN; }
 "{"             { yylval->c=yytext[0];return LBRACE; }
