@@ -3,7 +3,7 @@
 its made for all web developer who doesn't like to write the same code  in different file  which his currency : ***``  don't repeat yourself ``***<br/>
 you will never need to rewrite the same text again
 
-## state
+## states
 the H5A repository is on github 
 the current version is the 0.1.2
 
