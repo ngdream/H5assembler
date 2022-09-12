@@ -4,24 +4,28 @@ made by elodream
 H5assembler is a software made by elodream  which help  all frontend devellopper and integrator to
 create a static page in html without any repetitions
 it will guarantee you to be able to easily interer your frontend designs in websites
-
 */
-typedef void *yyscan_t;
+
+
 
 #include "h5parse.hxx"
 #include "h5lex.hpp"
 
 #include <iostream>
 #include <fstream>
+
 using namespace std;
+typedef void *yyscan_t;
 
 extern string initialdata;
 extern string pdata;
-extern bool loop;
 extern string basedir;
+
+extern bool loop;
 
 string compile(string content);
 string compilefile(string path);
+
 int runwithargs(int argc, char **argv);
 int compilewithh5m(char **argv, int argc);
 int runwithoutarg(char **argv);
