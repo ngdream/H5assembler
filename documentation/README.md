@@ -42,7 +42,7 @@ if you have these two files in the same directory
 launch the terminal in the  same directory and  type ``h5A index.html  output.html``
 h5A will generate the following file
 
-**outut.html**
+**output.html**
 ```html
 <html lang="en">
 <head>
@@ -63,6 +63,55 @@ h5A will generate the following file
 </body>
 </html>
 ```
+
+### the repeat function 
+
+this function  is used to include the contents of the file in another 
+
+#### exemble of use * 
+if you have these two files in the same directory
+**index.html**
+```html
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    
+    <title>simple include H5assembler</title>
+</head>
+<body>
+@repeat("3"){
+<h5>this is h5 assembler</h5>
+}
+</body>
+</html>
+```
+
+
+launch the terminal in the  same directory and  type ``h5A index.html  output.html``
+h5A will generate the following file
+
+**output.html**
+```html
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    
+    <title>simple include H5assembler</title>
+</head>
+<body>
+<h5>this is h5 assembler</h5>
+<h5>this is h5 assembler</h5>
+<h5>this is h5 assembler</h5>
+</body>
+</html>
+```
+
 
 ## how to use h5 commands
 
