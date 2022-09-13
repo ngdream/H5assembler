@@ -1,12 +1,16 @@
 
 /*
-made by elodream
+copyright 2022 @elodream
 H5assembler is a software made by elodream  which help  all frontend devellopper and integrator to
 create a static page in html without any repetitions
 it will guarantee you to be able to easily interer your frontend designs in websites
 */
 
+<<<<<<< Updated upstream
 
+=======
+typedef void *yyscan_t;
+>>>>>>> Stashed changes
 
 #include "h5parse.hxx"
 #include "h5lex.hpp"
@@ -115,7 +119,7 @@ string compilefile(string path)
         inputfile.close();
         return compile(data);
     }
-    cout << "connot find file (" << path << ")" << endl;
+    cout << "cannot find file (" << path << ")" << endl;
     return "";
 }
 
@@ -126,9 +130,11 @@ int saveoutput(string compileddata, string outputpath)
     outputpath = (outputpath == "") ? "output.html" : outputpath;
     ofstream outputfile(outputpath, ios::out | ios::binary);
     outputfile.write(compileddata.c_str(), compileddata.size());
+
     cout
-        << "\noperation terminated successfuly , output at :"
+        << "\noperation terminated successfuly , output at : "
         << outputpath << endl;
+
     outputfile.close();
     return 0;
 }
