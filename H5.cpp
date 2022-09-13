@@ -6,11 +6,7 @@ create a static page in html without any repetitions
 it will guarantee you to be able to easily interer your frontend designs in websites
 */
 
-<<<<<<< Updated upstream
-
-=======
 typedef void *yyscan_t;
->>>>>>> Stashed changes
 
 #include "h5parse.hxx"
 #include "h5lex.hpp"
