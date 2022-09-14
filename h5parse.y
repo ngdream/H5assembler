@@ -115,8 +115,7 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
         strcpy($$,repeated.c_str());
        
     }
-
-        if (string($1)=="@layout")
+    else if (string($1)=="@layout")
     {
 
         layout_data[$3]=$6;
