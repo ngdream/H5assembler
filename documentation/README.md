@@ -3,10 +3,10 @@ documentation
 
 - [about](#about)
 - [functions](#functions-in-h5a)
-    -[include](#the-include-function)
-    -[repeat](#the-repeat-function)
--[how to use](#how-to-use-h5-commands)
--[h5maker language](#about-the-h5maker-language)
+    - [include](#the-include-function)
+    - [repeat](#the-repeat-function)
+- [how to use](#how-to-use-h5-commands)
+- [h5maker language](#about-the-h5maker-language)
 ## about
 
 H5A helps frontend developers write html without repetition
