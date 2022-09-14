@@ -49,7 +49,8 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
     if(string($1)=="@field")
     {
          cout<<"define field :"<<$3<<endl;
-         
+         $$= new char[layout_data[$3].size()];
+         strcpy($$,layout_data[$3].c_str());
 
     }
     else if(string($1)=="@include")
@@ -74,13 +75,8 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
         }
         
     }
-    else if (string($1)=="@layout")
-    {
-        cout<<"define layout for field "<<$3<<endl;
-    }
-  
-    else
-    {
+    else if (string($1)=="@extends")
+{
         cout<<"extend file: "<<dir<<endl;
       
         ifstream file(dir.c_str(),ios::in | ios::binary |ios::ate);
@@ -118,6 +114,12 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
         $$=new char[repeated.size()];
         strcpy($$,repeated.c_str());
        
+    }
+
+        if (string($1)=="@layout")
+    {
+
+        layout_data[$3]=$6;
     }
 
     }

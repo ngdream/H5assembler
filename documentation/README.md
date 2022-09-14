@@ -1,6 +1,13 @@
-# documentation 
+documentation 
+===
 
-## content
+- [about](#about)
+- [functions](#functions-in-h5a)
+    -[include](#the-include-function)
+    -[repeat](#the-repeat-function)
+-[how to use](#how-to-use-h5-commands)
+-[h5maker language](#about-the-h5maker-language)
+## about
 
 H5A helps frontend developers write html without repetition
 it is also designed so that web designers can create designs that can be easily integrated into frameworks such as (laravel, django and others)
