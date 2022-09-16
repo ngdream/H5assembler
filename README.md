@@ -80,9 +80,3 @@ this command will generate an output.html file with the following content
 
 for more information about h5 using  read the  [``documentation``](documentation) 
 
-## contributing
-please the contibution guideline for more details
-## contributors
-
-help needed : this doesn't have contributors yet .
-
