@@ -69,7 +69,7 @@ instructions:instruction instructions |instruction
 
 void yyerror (const char *msg)
 {
-    cerr<<msg;
+    cerr<<"error in h5maker file";
 }
 
 void inith5m()

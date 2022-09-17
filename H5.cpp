@@ -71,10 +71,8 @@ int runwithargs(int argc, char **argv)
 // assemble a string
 string compile(string content)
 {
-
     do
     {
-
         loop = false;
         yyscan_t *scan = new yyscan_t;
         pdata.clear();

@@ -49,9 +49,11 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
     if(string($1)=="@field")
     {
          cout<<"define field :"<<$3<<endl;
+         if(layout_data.find($3)!=layout_data.end())
+         {
          $$= new char[layout_data[$3].size()];
          strcpy($$,layout_data[$3].c_str());
-
+         }
     }
     else if(string($1)=="@include")
     {
@@ -72,11 +74,10 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
         else
         {
             cout<<"cannot find file :"<<dir;
-        }
-        
+        }   
     }
     else if (string($1)=="@extends")
-{
+    {
         cout<<"extend file: "<<dir<<endl;
       
         ifstream file(dir.c_str(),ios::in | ios::binary |ios::ate);
@@ -85,10 +86,12 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
         char * buffer;    
         int length = file.tellg();
         file.seekg(0, std::ios::beg); 
+        
         buffer =(char*) malloc(sizeof(char)*length)   ;
         file.read(buffer, length); 
         buffer[length]='\0';
         file.close(); 
+        
         pdata+=buffer;
         free(buffer);
         }
@@ -96,7 +99,7 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
         {
             cout<<"cannot find file :"<<dir;
         }
-    
+
     }
     loop=true;
      };
@@ -117,14 +120,13 @@ command_call : COMMAND LPAREN STRING  RPAREN   {
     }
     else if (string($1)=="@layout")
     {
-
         layout_data[$3]=$6;
     }
 
     }
 //identify simple content
 tail:
-TXT{$$=new char[2]; $$[0]=$1; $$[1]='\0';} |RPAREN |LPAREN|STRING |command_call
+TXT{$$=new char[2]; $$[0]=$1; $$[1]='\0';} |RPAREN{$$=new char[2]; $$[0]=$1; $$[1]='\0';} |LPAREN{$$=new char[2]; $$[0]=$1; $$[1]='\0';}|STRING{string s='\"'+string($1)+'\"' ; $$=new char[s.size()+1] ;sprintf($$,"%s",s.c_str());} |command_call
 
 tails:tails tail
 {char *str = (char*) malloc(strlen($1) + strlen($2) + 1);
