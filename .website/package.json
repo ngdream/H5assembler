@@ -1,0 +1,17 @@
+{
+  "name": "H5assembler",
+  "version": "1.0.0",
+  "description": "Code satic html pages without repeating yourself",
+  "main": "index.js",
+  "author": "Ngdream",
+  "license": "MIT",
+  "devDependencies": {
+    "vitepress": "^1.0.0-alpha.29",
+    "vue": "^3.2.45"
+  },
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  }
+}
