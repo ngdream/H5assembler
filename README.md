@@ -23,6 +23,20 @@ pacman -S make
 ```
 -run the make command throw msys shell  in the project directory
 ``` make```
+
+
+1. ### on linux debian
+if you want to build H5assembler on window 
+- download flex , bison and make
+in msys64 type
+```shell
+sudo apt-get update 
+sudo apt install make
+sudo apt-get install flex bison
+
+```
+-run the make command
+``` make debian```
 ## exemple of use
 h5assembler offers you a technology allowing you to reduce your html code and guarantees you an easy integration in frameworks such as (laravel, django)
 
